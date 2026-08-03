@@ -28,6 +28,32 @@ const userMenuItems = [
     { label: 'Settings', href: '/settings', icon: Settings },
 ]
 
+/*
+
+
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "User profile fetch successfully",
+    "data": {
+        "profile": {
+            "id": "514e0fd7-1f32-497b-93ad-62e02081334d",
+            "name": "asif forizy",
+            "email": "asif@gmail.com",
+            "profilePhoto": "ami saifur rahaman asif",
+            "phone": "455445564546",
+            "address": "savar dhaka bd",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "stripeCustomerId": null,
+            "createdAt": "2026-07-10T15:15:28.016Z",
+            "updatedAt": "2026-07-10T15:16:46.842Z"
+        }
+    }
+}
+*/
+
+
 type IUser = {
     success: boolean,
     message: string,
@@ -36,18 +62,14 @@ type IUser = {
             id: string,
             name: string,
             email: string,
-            activeStatus: string,
+            profilePhoto: string,
+            phone: string,
+            address: string,
             role: string,
+            status: string,
+            stripeCustomerId: string | null,
             createdAt: string,
-            updatedAt: string,
-            profile: {
-                id: string,
-                profilePhoto: string,
-                bio: string | null,
-                userId: string,
-                createdAt: string,
-                updatedAt: string
-            }
+            updatedAt: string
         }
     }
 }
@@ -64,7 +86,7 @@ export function Navbar({ user }: NavbarProps) {
         if (action === "logout") {
             await logout();
             toast.success("User Logged Out Successfully!");
-            router.push("/login");
+            router.push("/auth/login");
         }
     };
 
@@ -98,7 +120,7 @@ export function Navbar({ user }: NavbarProps) {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
-                                            <div className="size-8 rounded-full flex items-center justify-center bg-gray-100">
+                                            <div className="size-8 rounded-full flex items-center justify-center bg-muted">
                                                 <User className="size-4" />
                                             </div>
 

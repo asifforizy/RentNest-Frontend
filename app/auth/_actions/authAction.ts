@@ -49,7 +49,7 @@ export const loginAction = async (
       sameSite: "lax",
     });
 
-    redirect("/dashboard");
+    redirect("/dashboard" );
   }
 
   return result;
