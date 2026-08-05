@@ -17,6 +17,7 @@ import { logout } from '@/service/logout'
 
 const navItems = [
     { label: 'Home', href: '/' },
+    { label: 'Properties', href: '/properties' },
     { label: 'About', href: '/about' },
     { label: 'Services', href: '/services' },
     { label: 'Contact', href: '/contact' },
@@ -28,30 +29,6 @@ const userMenuItems = [
     { label: 'Settings', href: '/settings', icon: Settings },
 ]
 
-/*
-
-
-{
-    "success": true,
-    "statusCode": 200,
-    "message": "User profile fetch successfully",
-    "data": {
-        "profile": {
-            "id": "514e0fd7-1f32-497b-93ad-62e02081334d",
-            "name": "asif forizy",
-            "email": "asif@gmail.com",
-            "profilePhoto": "ami saifur rahaman asif",
-            "phone": "455445564546",
-            "address": "savar dhaka bd",
-            "role": "ADMIN",
-            "status": "ACTIVE",
-            "stripeCustomerId": null,
-            "createdAt": "2026-07-10T15:15:28.016Z",
-            "updatedAt": "2026-07-10T15:16:46.842Z"
-        }
-    }
-}
-*/
 
 
 type IUser = {
