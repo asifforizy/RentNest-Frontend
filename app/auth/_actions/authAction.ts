@@ -14,12 +14,10 @@ type LoginState = {
   };
 };
 
-
 export interface AuthState {
   success: boolean;
   message: string;
 }
-
 
 export const loginAction = async (
   prevState: LoginState,
@@ -74,10 +72,11 @@ export const loginAction = async (
 export async function signupAction(formData: FormData): Promise<AuthState> {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
+  const role = formData.get("role") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
 
-  if (!name || !email || !password || !confirmPassword) {
+  if (!name || !email || !role || !password || !confirmPassword) {
     return { success: false, message: "All fields are required" };
   }
 
@@ -98,7 +97,7 @@ export async function signupAction(formData: FormData): Promise<AuthState> {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, role, password }),
       }
     );
 
