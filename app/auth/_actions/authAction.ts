@@ -92,8 +92,7 @@ export async function signupAction(formData: FormData): Promise<AuthState> {
   }
 
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_API_URL}/api/auth/register`,
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -39,7 +39,7 @@ export default function SignupForm() {
             return
         }
 
-        router.push("/")
+        router.push("/auth/login")
         router.refresh()
     }
 
