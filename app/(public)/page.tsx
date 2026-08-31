@@ -1,16 +1,12 @@
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import FeaturedProperties from "./_components/FeaturedProperties";
+
 
 const HomePage = () => {
   return (
-    <div>
-        HomePage
-        <Button>Hello world</Button>
+    <main>
+      <FeaturedProperties />
+    </main>
+  );
+};
 
-    </div>
-
-    
-  )
-}
-
-export default HomePage
+export default HomePage;
