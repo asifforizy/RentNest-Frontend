@@ -29,3 +29,15 @@ export interface PropertyCardProps {
 export interface PropertyListProps {
   properties: Property[];
 }
+
+
+
+export  interface PropertiesPageProps {
+  searchParams: Promise<{
+    search?: string;
+    category?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    location?: string;
+  }>;
+}

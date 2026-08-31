@@ -1,6 +1,6 @@
 "use server";
 
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -13,6 +13,13 @@ type LoginState = {
     refreshToken: string;
   };
 };
+
+
+export interface AuthState {
+  success: boolean;
+  message: string;
+}
+
 
 export const loginAction = async (
   prevState: LoginState,
@@ -50,19 +57,87 @@ export const loginAction = async (
       sameSite: "lax",
     });
 
+    const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
 
-     const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
-
-
-     if(decodedToken.role === "ADMIN"){
-            redirect("/dashboard/admin");
-        } else if (decodedToken.role === "TENANT"){
-            redirect("/dashboard/tenant");
-        } else if (decodedToken.role === "LANDLORD"){
-            redirect("/dashboard/landlord");
-        }
+    if (decodedToken.role === "ADMIN") {
+      redirect("/dashboard/admin");
+    } else if (decodedToken.role === "TENANT") {
+      redirect("/dashboard/tenant");
+    } else if (decodedToken.role === "LANDLORD") {
+      redirect("/dashboard/landlord");
     }
-  
+  }
 
   return result;
 };
+
+export async function signupAction(formData: FormData): Promise<AuthState> {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (!name || !email || !password || !confirmPassword) {
+    return { success: false, message: "All fields are required" };
+  }
+
+  if (password !== confirmPassword) {
+    return { success: false, message: "Passwords do not match" };
+  }
+
+  if (password.length < 6) {
+    return {
+      success: false,
+      message: "Password must be at least 6 characters",
+    };
+  }
+
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/api/auth/register`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      }
+    );
+
+    const result = await res.json();
+
+    if (!res.ok || !result.data) {
+      return {
+        success: false,
+        message: result.message || "Registration failed",
+      };
+    }
+
+    const { accessToken, refreshToken } = result.data;
+    const cookieStore = await cookies();
+
+    cookieStore.set("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24,
+      path: "/",
+    });
+
+    cookieStore.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    return {
+      success: true,
+      message: "Account created successfully",
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Network error. Please try again.",
+    };
+  }
+}

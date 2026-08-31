@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { useActionState, useEffect } from "react"
 import { loginAction } from "../_actions/authAction"
 import { toast } from "sonner"
+import Link from "next/link"
 
 
 
@@ -36,6 +37,7 @@ const LoginForm = () => {
                     pending ? "Submitting..." : "Login"
                 }
             </Button>
+            <p>Dont have an account? <Link href="/auth/register" className="text-primary hover:underline">Sign up</Link></p>
         </Card>
     </form>
   )

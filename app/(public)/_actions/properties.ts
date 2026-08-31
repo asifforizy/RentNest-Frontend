@@ -1,19 +1,49 @@
-import { Property } from "@/types/property";
+"use server";
 
-const BACKEND_API_URL = process.env.BACKEND_API_URL;
+interface PropertyFilters {
+  search?: string;
+  category?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  location?: string;
+}
 
-export const getAllProperties = async (): Promise<Property[]> => {
-  const response = await fetch( `${BACKEND_API_URL}/api/properties`,
+
+export const getAllProperties = async (filters?: PropertyFilters) => {
+  const params = new URLSearchParams();
+
+  if (filters?.search) {
+    params.set("search", filters.search);
+  }
+
+  if (filters?.category) {
+    params.set("category", filters.category);
+  }
+
+  if (filters?.minPrice) {
+    params.set("minPrice", filters.minPrice);
+  }
+
+  if (filters?.maxPrice) {
+    params.set("maxPrice", filters.maxPrice);
+  }
+
+  if (filters?.location) {
+    params.set("location", filters.location);
+  }
+
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/properties?${params.toString()}`,
     {
       cache: "no-store",
     }
   );
 
-  if (!response.ok) {
+  if (!res.ok) {
     throw new Error("Failed to fetch properties");
   }
 
-  const data = await response.json();
+  const result = await res.json();
 
-  return data.data;
+  return result.data;
 };
