@@ -32,7 +32,7 @@ export default function TenantOverview({
     return (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-            {/* Total Requests */}
+
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm font-medium">
@@ -51,7 +51,7 @@ export default function TenantOverview({
                 </CardContent>
             </Card>
 
-            {/* Pending */}
+
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm font-medium">
@@ -70,7 +70,7 @@ export default function TenantOverview({
                 </CardContent>
             </Card>
 
-            {/* Approved */}
+  
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm font-medium">
@@ -89,7 +89,7 @@ export default function TenantOverview({
                 </CardContent>
             </Card>
 
-            {/* Payments */}
+     
             <Card>
                 <CardHeader>
                     <CardTitle className="text-sm font-medium">

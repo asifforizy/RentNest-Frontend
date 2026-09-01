@@ -1,89 +1,121 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+    RentalRequest,
+    RequestStatus,
+} from "@/types/landlord";
+import { updateRentalRequestAction } from "../_actions/landlord";
 
-import { Badge } from "@/components/ui/badge";
+interface Props {
+    requests: RentalRequest[];
+}
 
-import type { Rental } from "@/types/rental";
 
-type RentalRequestsProps = {
-    rentals: Rental[];
-};
+export default function RentalRequestList({
+    requests,
+}: Props) {
+    const router = useRouter();
+    const [loadingId, setLoadingId] =
+        useState<string | null>(null);
 
-export default function RentalRequests({
-    rentals,
-}: RentalRequestsProps) {
+
+    async function handleStatus(
+        id: string,
+        status: RequestStatus
+    ) {
+
+        try {
+            setLoadingId(id);
+            await updateRentalRequestAction(
+                id,
+                status
+            );
+            router.refresh();
+        } catch (error) {
+            console.error(error);
+            alert(
+                "Failed to update request"
+            );
+        } finally {
+            setLoadingId(null);
+        }
+    }
+
+    if (!requests.length) {
+        return (
+            <div>
+                No rental requests found.
+            </div>
+        );
+
+    }
+
+
     return (
-        <Card className="mt-8">
-            <CardHeader>
-                <CardTitle>Rental Requests</CardTitle>
-            </CardHeader>
+        <div className="space-y-4">
+            {requests.map((request) => (
+                <div  key={request.id}    className="border rounded-lg p-5">
+                    <h2 className="font-bold">
+                        {request.property?.title}
+                    </h2>
+                    <p>
+                        Tenant:{" "} {request.tenant?.name}
+                    </p>
+                    <p>
+                        {request.tenant?.email}
+                    </p>
+                    <p className="mt-2">
+                        Status:
+                        {" "}
+                        <strong>
+                            {request.status}
+                        </strong>
+                    </p>
+                    {request.status === "PENDING" && (
+                        <div className="flex gap-3 mt-4">
+                            <button
+                                disabled={
+                                    loadingId === request.id
+                                }
 
-            <CardContent>
-                {rentals.length === 0 ? (
-                    <div className="py-10 text-center">
-                        <p className="text-muted-foreground">
-                            You haven&apos;t made any rental requests yet.
-                        </p>
+                                onClick={() =>
+                                    handleStatus(
+                                        request.id,
+                                        "APPROVED"
+                                    )
+                                }
 
-                        <Link
-                            href="/properties"
-                            className="mt-4 inline-block text-sm font-medium underline"
-                        >
-                            Browse properties
-                        </Link>
-                    </div>
-                ) : (
-                    <div className="space-y-4">
-                        {rentals.map((rental) => (
-                            <div
-                                key={rental.id}
-                                className="flex flex-col justify-between gap-4 rounded-lg border p-4 sm:flex-row sm:items-center"
+                                className="bg-gray-900 text-white px-4 py-2 rounded"
                             >
-                                {/* Property Information */}
-                                <div>
-                                    <h3 className="font-semibold">
-                                        {rental.property?.title ??
-                                            "Rental Property"}
-                                    </h3>
+                                Approve
 
-                                    <p className="mt-1 text-sm text-muted-foreground">
-                                        Requested on{" "}
-                                        {new Date(
-                                            rental.createdAt
-                                        ).toLocaleDateString()}
-                                    </p>
+                            </button>
 
-                                    {rental.property?.rentPrice !== undefined && (
-                                        <p className="mt-1 text-sm font-medium">
-                                            ৳{rental.property.rentPrice} / month
-                                        </p>
-                                    )}
-                                </div>
 
-                                {/* Status + Action */}
-                                <div className="flex items-center gap-3">
-                                    <Badge>
-                                        {rental.status}
-                                    </Badge>
+                            <button
+                                disabled={
+                                    loadingId === request.id
+                                }
 
-                                    <Link
-                                        href={`/dashboard/tenant/requests/${rental.id}/pay`}
-                                        className="rounded-md border px-3 py-2 text-sm font-medium transition hover:bg-muted"
-                                    >
-                                        View
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </CardContent>
-        </Card>
-    );
+                                onClick={() =>
+                                    handleStatus(
+                                        request.id,
+                                        "REJECTED"
+                                    )
+                                }
+                                className="border border-red-500 text-red-500 px-4 py-2 rounded"
+                            >
+
+                                Reject
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+    )
 }
