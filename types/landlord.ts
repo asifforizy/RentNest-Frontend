@@ -1,39 +1,44 @@
+export interface Category {
+  id: string;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface LandlordProperty {
   id: string;
   title: string;
   description?: string;
 
-  location: string;
-  rent: number;
+  city: string;
+  country: string;
 
-  bedrooms?: number;
-  bathrooms?: number;
+  rentPrice: number;
+  propertyPhoto?: string;
 
-  image?: string;
+  availability?: "AVAILABLE" | "UNAVAILABLE";
 
-  status?: "AVAILABLE" | "RENTED";
+  categoryId: string;
+  category?: Category;
 
+  landlordId?: string;
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface CreatePropertyInput {
   title: string;
-  description: string;
-
-  location: string;
-  rent: number;
-
-  bedrooms: number;
-  bathrooms: number;
-
-  image?: string;
+  description?: string;
+  city?: string;
+  country?: string;
+  rentPrice: number;
+  propertyPhoto?: string;
+  categoryId: string;
 }
 
 export interface RentalRequest {
   id: string;
-
   propertyId: string;
-
   status: RequestStatus;
 
   tenant?: {
@@ -45,7 +50,8 @@ export interface RentalRequest {
   property?: {
     id: string;
     title: string;
-    location: string;
+    city: string;
+    country: string;
   };
 
   createdAt: string;

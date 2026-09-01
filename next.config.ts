@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "rent-nest-beta.vercel.app",
         pathname: "/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+      },
     ],
   },
 };

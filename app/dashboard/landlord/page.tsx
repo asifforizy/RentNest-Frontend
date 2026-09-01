@@ -6,11 +6,12 @@ import {
   Inbox,
   Plus,
   ArrowRight,
-  MapPin,
 } from "lucide-react";
 
 import { getMyPropertiesAction } from "../_actions/landlord";
 import type { LandlordProperty } from "@/types/landlord";
+import PropertyCard from "../_components/PropertyCard";
+
 
 export default async function LandlordDashboardPage() {
   const properties = await getMyPropertiesAction();
@@ -20,13 +21,13 @@ export default async function LandlordDashboardPage() {
   const availableProperties =
     properties?.filter(
       (property: LandlordProperty) =>
-        property.status === "AVAILABLE"
+        property.availability === "AVAILABLE"
     ).length || 0;
 
-  const rentedProperties =
+  const unavailableProperties =
     properties?.filter(
       (property: LandlordProperty) =>
-        property.status === "RENTED"
+        property.availability === "UNAVAILABLE"
     ).length || 0;
 
   return (
@@ -83,7 +84,7 @@ export default async function LandlordDashboardPage() {
 
 
           <Link
-            href="/dashboard/landlord/properties"
+            href="/dashboard/landlord/properties?availability=AVAILABLE"
             className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-gray-300 hover:shadow-md"
           >
             <div className="flex items-start justify-between">
@@ -114,19 +115,19 @@ export default async function LandlordDashboardPage() {
 
 
           <Link
-            href="/dashboard/landlord/properties?status=RENTED"
+            href="/dashboard/landlord/properties?availability=UNAVAILABLE"
             className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-gray-300 hover:shadow-md"
           >
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">
-                  Rented Properties
+                  Unavailable Properties
                 </p>
                 <h2 className="mt-3 text-3xl font-bold text-gray-900">
-                  {rentedProperties}
+                  {unavailableProperties}
                 </h2>
                 <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-900">
-                  View rented
+                  View unavailable
                   <ArrowRight
                     size={16}
                     className="transition group-hover:translate-x-1"
@@ -200,59 +201,13 @@ export default async function LandlordDashboardPage() {
 
           {properties?.length > 0 ? (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {properties.slice(0, 3).map(
-                (property: LandlordProperty) => (
-                  <div
-                    key={property.id}
-                    className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
-                  >
-                    <div className="flex h-44 items-center justify-center bg-gray-100">
-                      <Home
-                        size={38}
-                        className="text-gray-400"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-start justify-between gap-4">
-                        <h3 className="line-clamp-1 font-semibold text-gray-900">
-                          {property.title}
-                        </h3>
-                        <span className="shrink-0 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
-                          {property.status || "AVAILABLE"}
-                        </span>
-                      </div>
-                      <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
-                        <MapPin size={16} />
-                        <span className="line-clamp-1">
-                          {property.location ||
-                            "Location not available"}
-                        </span>
-                      </div>
-
-                      <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
-                        <div>
-                          <p className="text-xs text-gray-500">
-                            Monthly Rent
-                          </p>
-
-                          <p className="mt-1 text-lg font-bold text-gray-900">
-                            ৳ {property.rent}
-                          </p>
-                        </div>
-
-                        <Link
-                          href={`/dashboard/landlord/properties/${property.id}`}
-                          className="inline-flex items-center gap-1 text-sm font-semibold text-gray-700 transition hover:text-black"
-                        >
-                          Manage
-                          <ArrowRight size={16} />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )
-              )}
-
+              {properties.slice(0, 3).map((property: LandlordProperty) => (
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  variant="compact"
+                />
+              ))}
             </div>
 
           ) : (
