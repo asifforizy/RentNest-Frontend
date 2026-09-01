@@ -8,7 +8,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { User, Settings, LogOut, UserCircle } from 'lucide-react'
+import { User, Settings, LogOut, UserCircle , LayoutDashboard } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
@@ -27,6 +27,7 @@ const navItems = [
 const userMenuItems = [
     { label: 'Profile', href: '/profile', icon: UserCircle },
     { label: 'Settings', href: '/settings', icon: Settings },
+    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
 ]
 
 

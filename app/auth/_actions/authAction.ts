@@ -19,10 +19,7 @@ export interface AuthState {
   message: string;
 }
 
-export const loginAction = async (
-  prevState: LoginState,
-  formData: FormData
-) => {
+export const loginAction = async ( prevState: LoginState,  formData: FormData) => {
   const email = formData.get("email");
   const password = formData.get("password");
 
@@ -60,7 +57,7 @@ export const loginAction = async (
     if (decodedToken.role === "ADMIN") {
       redirect("/dashboard/admin");
     } else if (decodedToken.role === "TENANT") {
-      redirect("/dashboard/tenant");
+      redirect("/");
     } else if (decodedToken.role === "LANDLORD") {
       redirect("/dashboard/landlord");
     }
