@@ -10,7 +10,7 @@ export default async function FeaturedProperties() {
   const featuredProperties = properties.slice(0, 6);
 
   return (
-    <section className="mx-auto  px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto  px-4 py-16 sm:px-6 lg:px-20">
       <div className="mb-8">
         <HeroBanner></HeroBanner>
       </div>

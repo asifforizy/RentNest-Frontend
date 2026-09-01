@@ -18,7 +18,7 @@ export default async function PropertiesPage({
   });
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <main className="mx-auto  px-4 py-10 sm:px-6 lg:px-20">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
           Find Your Perfect Home

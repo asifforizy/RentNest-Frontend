@@ -8,6 +8,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 
 
@@ -15,6 +16,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     const isAvailable = property.availability === "AVAILABLE";
 
     return (
+        <Link href={`/properties/${property.id}`}>
         <Card className="group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ">
 
             <div className="relative h-56 w-full overflow-hidden bg-muted">
@@ -83,6 +85,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
                 </div>
             </CardFooter>
         </Card>
+        </Link>
     );
 }
 
