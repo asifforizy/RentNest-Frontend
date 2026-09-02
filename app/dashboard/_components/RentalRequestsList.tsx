@@ -69,7 +69,7 @@ export default function RentalRequestList({
                     </h2>
 
                     <p className="mt-2 text-sm text-muted-foreground">
-                        You don't have any rental requests yet.
+                        {`You don't have any rental requests yet.`}
                     </p>
                 </div>
             ) : (

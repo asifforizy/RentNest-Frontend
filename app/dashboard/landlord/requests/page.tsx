@@ -33,7 +33,7 @@ export default async function RentalRequestsPage() {
     const requests: RentalRequest[] = result.data;
 
     return (
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl pt-10 px-5">
             <RentalRequestList requests={requests} />
         </div>
     );
