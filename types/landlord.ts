@@ -35,29 +35,35 @@ export interface CreatePropertyInput {
   propertyPhoto?: string;
   categoryId: string;
 }
-
 export interface RentalRequest {
-  id: string;
-  propertyId: string;
-  status: RequestStatus;
-
-  tenant?: {
     id: string;
-    name: string;
-    email: string;
-  };
-
-  property?: {
-    id: string;
-    title: string;
-    city: string;
-    country: string;
-  };
-
-  createdAt: string;
+    propertyId: string;
+    status: RequestStatus;
+    moveInDate?: string;
+    message?: string;
+    rejectionReason?: string | null;
+    approvedAt?: string | null;
+    tenantId?: string;
+    tenant?: {
+        id: string;
+        name: string;
+        email: string;
+    };
+    property?: {
+        id: string;
+        title: string;
+        city: string;
+        country: string;
+        propertyPhoto?: string;
+    };
+    createdAt: string;
+    updatedAt?: string;
 }
 
 export type RequestStatus =
-  | "PENDING"
-  | "APPROVED"
-  | "REJECTED";
+    | "PENDING"
+    | "APPROVED"
+    | "REJECTED"
+    | "CANCELLED"
+    | "ACTIVE"
+    | "COMPLETED";

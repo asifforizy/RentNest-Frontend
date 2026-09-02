@@ -39,7 +39,7 @@ export async function getMyPropertiesAction() {
 export async function createPropertyAction(data: CreatePropertyInput) {
   const headers = await getAuthHeaders();
 
-  const response = await fetch(`https://rent-nest-beta.vercel.app/api/landlord/properties`, {
+  const response = await fetch(`${API_URL}/api/landlord/properties`, {
     method: "POST",
     headers,
     body: JSON.stringify(data),
@@ -95,7 +95,7 @@ export async function deletePropertyAction(id: string) {
 export async function getLandlordRequestsAction() {
   const headers = await getAuthHeaders();
 
-  const response = await fetch(`${API_URL}/api/landlord/requests`, {
+  const response = await fetch(`https://rent-nest-beta.vercel.app/api/landlord/requests`, {
     method: "GET",
     headers,
     cache: "no-store",

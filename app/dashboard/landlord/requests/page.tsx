@@ -1,24 +1,40 @@
-import { getLandlordRequestsAction } from "../../_actions/landlord";
-import RentalRequestList from "../../_components/RentalRequests";
+import { cookies } from "next/headers";
 
-export default async function RequestsPage() {
 
-  const requests =
-    await getLandlordRequestsAction();
+import { RentalRequest } from "@/types/landlord";
+import RentalRequestList from "../../_components/RentalRequestsList";
 
-  return (
+export default async function RentalRequestsPage() {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value;
 
-    <div className="p-6">
+    const response = await fetch(
+        `${process.env.BACKEND_API_URL}/api/landlord/requests`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+            cache: "no-store",
+        }
+    );
 
-      <h1 className="text-2xl font-bold mb-6">
-        Rental Requests
-      </h1>
+    const result = await response.json();
 
-      <RentalRequestList
-        requests={requests}
-      />
+    console.log("Rental requests API response:", result);
 
-    </div>
+    if (!response.ok) {
+        throw new Error(
+            result?.message || "Failed to fetch rental requests"
+        );
+    }
 
-  );
+    const requests: RentalRequest[] = result.data;
+
+    return (
+        <div className="mx-auto max-w-6xl">
+            <RentalRequestList requests={requests} />
+        </div>
+    );
 }
