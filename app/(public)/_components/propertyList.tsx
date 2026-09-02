@@ -1,4 +1,4 @@
-import { Property, PropertyListProps } from "@/types/property";
+import {  PropertyListProps } from "@/types/property";
 import PropertyCard from "./propertyCard";
 
 
