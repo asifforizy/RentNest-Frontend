@@ -25,7 +25,6 @@ export default async function TenantDashboard() {
 
                 <TenantOverview
                     rentals={rentals}
-                    payments={payments}
                 />
 
                 <RentalRequests rentals={rentals} />

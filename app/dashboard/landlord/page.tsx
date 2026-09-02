@@ -1,8 +1,6 @@
 import Link from "next/link";
 import {
   Building2,
-  CircleCheck,
-  Home,
   Inbox,
   Plus,
   ArrowRight,
@@ -19,17 +17,8 @@ export default async function LandlordDashboardPage() {
   const totalProperties = properties?.length || 0;
   const totalRequests = rentalRequests?.length || 0;
 
-  const availableProperties =
-    properties?.filter(
-      (property: LandlordProperty) =>
-        property.availability === "AVAILABLE"
-    ).length || 0;
 
-  const unavailableProperties =
-    properties?.filter(
-      (property: LandlordProperty) =>
-        property.availability === "UNAVAILABLE"
-    ).length || 0;
+ 
 
   return (
     <div className="min-h-screen bg-gray-50">

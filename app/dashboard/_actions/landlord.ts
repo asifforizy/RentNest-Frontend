@@ -167,20 +167,27 @@ export async function getCategoriesAction(): Promise<Category[]> {
 
 
 
-
 export async function getMyRentalRequestsAction() {
-  const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/landlord/requests`,
+  const headers = await getAuthHeaders();
+
+  const response = await fetch(
+    `${API_URL}/api/landlord/requests`,
     {
+      method: "GET",
+      headers,
       cache: "no-store",
     }
   );
 
-  const result = await res.json();
+  const result = await response.json();
 
-  if (!result.success) {
-    return [];
+  console.log("LANDLORD RENTAL REQUESTS:", result);
+
+  if (!response.ok) {
+    throw new Error(
+      result.message || "Failed to fetch rental requests"
+    );
   }
 
-  return result.data;
+  return result.data || [];
 }
