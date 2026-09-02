@@ -57,9 +57,6 @@ export async function createPropertyAction(data: CreatePropertyInput) {
 }
 
 
-
-
-
 export async function updatePropertyAction(
   id: string,
   data: Partial<CreatePropertyInput>
@@ -79,15 +76,6 @@ export async function updatePropertyAction(
 
   return result.data;
 }
-
-
-
-
-
-
-
-
-
 
 
 
