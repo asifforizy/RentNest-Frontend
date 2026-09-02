@@ -2,166 +2,128 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-import { MapPin, Pencil, Trash2, Home, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 import type { LandlordProperty } from "@/types/landlord";
-import { deletePropertyAction } from "../_actions/landlord";
-import Image from "next/image";
 
 interface PropertyCardProps {
   property: LandlordProperty;
-  variant?: "full" | "compact";
 }
 
 const RENTAL_STATUS_STYLES: Record<
   "AVAILABLE" | "UNAVAILABLE",
-  { dot: string; label: string; stripe: string }
+  {
+    dot: string;
+    badge: string;
+    label: string;
+  }
 > = {
-  AVAILABLE: { dot: "bg-emerald-400", label: "Available", stripe: "bg-emerald-500" },
-  UNAVAILABLE: { dot: "bg-neutral-400", label: "Unavailable", stripe: "bg-neutral-500" },
+  AVAILABLE: {
+    dot: "bg-emerald-500",
+    badge: "bg-emerald-50 text-emerald-700",
+    label: "Available",
+  },
+  UNAVAILABLE: {
+    dot: "bg-neutral-400",
+    badge: "bg-neutral-100 text-neutral-600",
+    label: "Unavailable",
+  },
 };
 
 export default function PropertyCard({
   property,
-  variant = "full",
 }: PropertyCardProps) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
 
   const rentalStatus =
     RENTAL_STATUS_STYLES[property.availability ?? "AVAILABLE"] ??
     RENTAL_STATUS_STYLES.AVAILABLE;
 
-  const location = [property.city, property.country].filter(Boolean).join(", ");
+  const location = [property.city, property.country]
+    .filter(Boolean)
+    .join(", ");
 
-  const hasValidPhoto =
-    !!property.propertyPhoto &&
-    (property.propertyPhoto.startsWith("http://") ||
-      property.propertyPhoto.startsWith("https://") ||
-      property.propertyPhoto.startsWith("/")) &&
-    !imgFailed;
-
-  async function handleDelete() {
-    const confirmed = window.confirm(
-      "Delete this property? This can't be undone."
-    );
-    if (!confirmed) return;
-
-    try {
-      setLoading(true);
-      await deletePropertyAction(property.id);
-      router.refresh();
-    } catch (error) {
-      console.error(error);
-      alert("Couldn't delete this property. Try again.");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const propertyUrl = `/dashboard/landlord/properties/${property.id}`;
 
   return (
-    <article className="group relative flex overflow-hidden rounded-xl border border-neutral-200 bg-white transition-colors duration-200 hover:border-neutral-300">
+    <article className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg">
 
-      <div className={`w-1 shrink-0 ${rentalStatus.stripe}`} aria-hidden="true" />
-
-      <div className="flex min-w-0 flex-1 flex-col">
-
-        <div
-          className={`relative w-full shrink-0 overflow-hidden bg-neutral-100 ${variant === "compact" ? "h-40" : "h-60"
-            }`}
-        >
-          {hasValidPhoto ? (
+      <Link href={propertyUrl} className="block">
+        <div className="relative h-44 overflow-hidden bg-neutral-100">
+          {!imgFailed && (
             <Image
-            unoptimized
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              src={property.propertyPhoto!}
+              src={property.propertyPhoto as string}
               alt={property.title}
+              fill
+              unoptimized
+              sizes="(max-width: 768px) 100vw, 33vw"
               onError={() => setImgFailed(true)}
-              className="h-full w-full object-cover"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <Home size={40} className="text-neutral-300" />
-            </div>
           )}
 
-          <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-          <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
-            <div className="flex items-center gap-1.5">
-              <span className={`h-1.5 w-1.5 rounded-full ${rentalStatus.dot}`} />
-              <span className="text-xs font-medium text-white">
-                {rentalStatus.label}
-              </span>
+          <div className="absolute left-4 top-4">
+            <div
+              className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium backdrop-blur-sm ${rentalStatus.badge}`}
+            >
+              <span
+                className={`h-2 w-2 rounded-full ${rentalStatus.dot}`}
+              />
+              {rentalStatus.label}
             </div>
+          </div>
 
-            {property.category && (
-              <span className="rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-medium text-neutral-800">
+          {/* Category */}
+          {property.category && (
+            <div className="absolute right-4 top-4">
+              <span className="rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-neutral-700 backdrop-blur-sm">
                 {property.category.name}
               </span>
-            )}
-          </div>
+            </div>
+          )}
+        </div>
 
-          <div className="absolute inset-x-0 bottom-0 p-4">
-            <h2 className="truncate text-lg font-semibold leading-tight text-white">
+
+        <div className="p-5">
+          <Link href={propertyUrl}>
+            <h2 className="truncate text-lg font-semibold text-neutral-900 transition hover:text-neutral-600">
               {property.title}
             </h2>
-            <div className="mt-1 flex items-center gap-1.5 text-sm text-white/75">
-              <MapPin size={14} className="shrink-0" />
-              <span className="truncate">
-                {location || "Location not available"}
-              </span>
+          </Link>
+
+          <div className="mt-2 flex items-center gap-2 text-sm text-neutral-500">
+            <MapPin size={16} className="shrink-0" />
+
+            <span className="truncate">
+              {location || "Location not available"}
+            </span>
+          </div>
+
+          <div className="my-5 border-t border-neutral-100" />
+
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-neutral-400">
+                Monthly Rent
+              </p>
+
+              <p className="mt-1 text-xl font-bold text-neutral-900">
+                ৳ {property.rentPrice?.toLocaleString()}
+              </p>
             </div>
+
+            <Link
+              href={propertyUrl}
+              className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Manage
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
-
-        <div className="flex items-end justify-between border-t border-neutral-100 px-4 py-3">
-          <div>
-            <p className="text-[11px] font-medium text-neutral-400">
-              Monthly rent
-            </p>
-            <p className="mt-0.5 text-xl font-semibold tabular-nums text-neutral-900">
-              ৳ {property.rentPrice?.toLocaleString()}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            {variant === "compact" ? (
-              <Link
-                href={`/dashboard/landlord/properties/${property.id}`}
-                className="flex items-center gap-1 text-sm font-medium text-neutral-700 transition hover:text-neutral-900"
-              >
-                Manage
-                <ArrowRight size={16} />
-              </Link>
-            ) : (
-              <>
-                <Link
-                  href={`/dashboard/landlord/properties/${property.id}/edit`}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
-                  title="Edit property"
-                >
-                  <Pencil size={16} />
-                </Link>
-
-                <button
-                  onClick={handleDelete}
-                  disabled={loading}
-                  className="flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
-                  title="Delete property"
-                >
-                  <Trash2 size={16} />
-                  {loading ? "Deleting…" : "Delete"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+      </Link>
     </article>
   );
 }

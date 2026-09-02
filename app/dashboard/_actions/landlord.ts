@@ -56,6 +56,10 @@ export async function createPropertyAction(data: CreatePropertyInput) {
   return result.data;
 }
 
+
+
+
+
 export async function updatePropertyAction(
   id: string,
   data: Partial<CreatePropertyInput>
@@ -76,6 +80,18 @@ export async function updatePropertyAction(
   return result.data;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 export async function deletePropertyAction(id: string) {
   const headers = await getAuthHeaders();
 
@@ -91,6 +107,9 @@ export async function deletePropertyAction(id: string) {
   }
   return result.data;
 }
+
+
+
 
 export async function getLandlordRequestsAction() {
   const headers = await getAuthHeaders();
@@ -108,6 +127,10 @@ export async function getLandlordRequestsAction() {
   }
   return result.data;
 }
+
+
+
+
 
 export async function updateRentalRequestAction(
   id: string,
@@ -130,6 +153,10 @@ export async function updateRentalRequestAction(
   }
   return result.data;
 }
+
+
+
+
 
 
 export async function getCategoriesAction(): Promise<Category[]> {
