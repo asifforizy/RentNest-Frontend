@@ -8,15 +8,16 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import { getMyPropertiesAction } from "../_actions/landlord";
+import { getMyPropertiesAction, getMyRentalRequestsAction } from "../_actions/landlord";
 import type { LandlordProperty } from "@/types/landlord";
 import PropertyCard from "../_components/PropertyCard";
 
 
 export default async function LandlordDashboardPage() {
   const properties = await getMyPropertiesAction();
-
+  const rentalRequests = await getMyRentalRequestsAction();
   const totalProperties = properties?.length || 0;
+  const totalRequests = rentalRequests?.length || 0;
 
   const availableProperties =
     properties?.filter(
@@ -155,7 +156,7 @@ export default async function LandlordDashboardPage() {
                   Rental Requests
                 </p>
                 <h2 className="mt-3 text-3xl font-bold text-gray-900">
-                  --
+                  {totalRequests}
                 </h2>
                 <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-900">
                   Manage requests
@@ -205,7 +206,6 @@ export default async function LandlordDashboardPage() {
                 <PropertyCard
                   key={property.id}
                   property={property}
-                  variant="compact"
                 />
               ))}
             </div>

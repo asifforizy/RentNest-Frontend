@@ -175,3 +175,24 @@ export async function getCategoriesAction(): Promise<Category[]> {
  
   return result.data;
 }
+
+
+
+
+
+export async function getMyRentalRequestsAction() {
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/landlord/requests`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  const result = await res.json();
+
+  if (!result.success) {
+    return [];
+  }
+
+  return result.data;
+}
