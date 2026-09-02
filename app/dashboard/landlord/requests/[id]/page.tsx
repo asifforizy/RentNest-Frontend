@@ -71,6 +71,7 @@ export default async function RentalRequestDetailsPage({
             <div className="overflow-hidden rounded-2xl border bg-card shadow-sm">
                 <div className="relative h-80 w-full bg-muted">
                     <Image
+                        unoptimized
                         src={
                             request.property?.propertyPhoto ||
                             "/placeholder-property.jpg"
@@ -147,25 +148,13 @@ export default async function RentalRequestDetailsPage({
 
                     <div className="mt-6 space-y-5">
                         <InfoRow
-                            label="Request ID"
-                            value={request.id}
-                        />
-
-                        <InfoRow
-                            label="Property"
-                            value={
-                                request.property?.title ||
-                                "Unknown property"
-                            }
-                        />
-
-                        <InfoRow
                             label="Tenant"
                             value={
                                 request.tenant?.name ||
                                 "Unknown tenant"
                             }
                         />
+
 
                         <InfoRow
                             label="Email"
@@ -174,6 +163,25 @@ export default async function RentalRequestDetailsPage({
                                 "No email available"
                             }
                         />
+
+                        <InfoRow
+                            label="Request Message"
+                            value={request.message}
+                        />
+
+
+
+
+
+                        <div className="flex items-center justify-between border-b pb-5">
+                            <span className="text-sm text-muted-foreground">
+                                Status
+                            </span>
+
+                            <StatusBadge
+                                status={request.status}
+                            />
+                        </div>
 
                         <InfoRow
                             label="Move-in Date"
@@ -190,15 +198,7 @@ export default async function RentalRequestDetailsPage({
                             )}
                         />
 
-                        <div className="flex items-center justify-between border-b pb-5">
-                            <span className="text-sm text-muted-foreground">
-                                Status
-                            </span>
 
-                            <StatusBadge
-                                status={request.status}
-                            />
-                        </div>
                     </div>
                 </div>
 

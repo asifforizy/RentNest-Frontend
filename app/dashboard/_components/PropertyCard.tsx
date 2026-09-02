@@ -115,11 +115,14 @@ export default function PropertyCard({
             </div>
 
             <Link
-              href={propertyUrl}
-              className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-700 transition hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              Manage
-              <ArrowRight size={16} />
+              href={propertyUrl}>
+              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-900">
+                View all
+                <ArrowRight
+                  size={16}
+                  className="transition group-hover:translate-x-1"
+                />
+              </div>
             </Link>
           </div>
         </div>
@@ -127,3 +130,5 @@ export default function PropertyCard({
     </article>
   );
 }
+
+

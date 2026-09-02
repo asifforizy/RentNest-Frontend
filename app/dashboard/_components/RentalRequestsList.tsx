@@ -7,6 +7,9 @@ import {
     RentalRequest,
     RequestStatus,
 } from "@/types/landlord";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+
 
 interface Props {
     requests: RentalRequest[];
@@ -137,17 +140,20 @@ export default function RentalRequestList({
                                     </div>
 
                                     <div className="mt-6 flex justify-end">
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                router.push(
-                                                    `/dashboard/landlord/requests/${request.id}`
-                                                )
-                                            }
-                                            className="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-gray-800"
+                                        <Link
+                                            href={`/dashboard/landlord/requests/${request.id}`}
+                                            className="group inline-block "
                                         >
-                                            View Details
-                                        </button>
+                                            <div className="flex items-center gap-1 text-sm font-medium text-gray-600 transition hover:text-gray-900 hover:translate-x-1 hover:bg-accent hover:rounded-lg px-2 py-1 hover:bg-opacity-10 hover:underline">
+                                                View Details
+                                                <ArrowRight
+                                                    size={16}
+                                                    className="transition-transform duration-200 group-hover:translate-x-1"
+                                                />
+                                            </div>
+                                        </Link>
+
+
                                     </div>
                                 </div>
                             </div>
