@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 import { RentalRequest } from "@/types/landlord";
 import RentalRequestList from "../../_components/RentalRequestsList";
+import Link from "next/link";
 
 export default async function RentalRequestsPage() {
     const cookieStore = await cookies();
@@ -33,7 +34,14 @@ export default async function RentalRequestsPage() {
     const requests: RentalRequest[] = result.data;
 
     return (
-        <div className="mx-auto max-w-6xl pt-10 px-5">
+        <div className="mx-auto max-w-6xl mt-7 px-5 pb-10 ">
+            <Link
+                href="/dashboard/landlord"
+                className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground mb-4"
+            >
+                ← Back to rental requests
+            </Link>
+
             <RentalRequestList requests={requests} />
         </div>
     );

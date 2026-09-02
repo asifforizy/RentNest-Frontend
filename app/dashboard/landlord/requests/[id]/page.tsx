@@ -50,7 +50,7 @@ export default async function RentalRequestDetailsPage({
     }
 
     return (
-        <div className="mx-auto max-w-6xl space-y-6">
+        <div className="mx-auto max-w-6xl space-y-6 mt-10 px-5 pb-10">
             <Link
                 href="/dashboard/landlord/requests"
                 className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
