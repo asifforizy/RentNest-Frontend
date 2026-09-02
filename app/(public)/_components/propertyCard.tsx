@@ -50,7 +50,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
 
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span></span>
+
                         <span>
                             {property.city}, {property.country}
                         </span>
@@ -59,8 +59,9 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
                 <CardContent className="space-y-4">
 
-                    <p className="line-clamp-2 text-sm text-muted-foreground">
-                        {property.description}
+                    <p className="text-sm text-muted-foreground">
+                        {property.description?.split(" ").slice(0, 15).join(" ")}
+                        {property.description?.split(" ").length > 15 && "..."}
                     </p>
 
                     <div>
@@ -92,4 +93,3 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         </Link>
     );
 }
-

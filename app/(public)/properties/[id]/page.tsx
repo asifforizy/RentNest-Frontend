@@ -33,7 +33,6 @@ export default async function PropertyDetails({
     <main className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 
-        {/* Property Image */}
         <div className="relative h-[420px] w-full overflow-hidden rounded-2xl sm:h-[500px]">
           <Image
             src={property.propertyPhoto}
@@ -65,13 +64,11 @@ export default async function PropertyDetails({
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="mt-10 grid gap-10 lg:grid-cols-3">
 
-          {/* Left Content */}
           <div className="lg:col-span-2">
 
-            {/* Property Overview */}
+
             <div className="grid grid-cols-2 gap-4 rounded-2xl border bg-card p-5 sm:grid-cols-4">
               <div>
                 <p className="text-sm text-muted-foreground">
@@ -112,7 +109,6 @@ export default async function PropertyDetails({
               </div>
             </div>
 
-            {/* Description */}
             <section className="mt-10">
               <h2 className="text-2xl font-semibold">
                 About this property
@@ -124,7 +120,6 @@ export default async function PropertyDetails({
               </p>
             </section>
 
-            {/* Landlord */}
             <section className="mt-10 border-t pt-8">
               <h2 className="text-2xl font-semibold">
                 Your host
@@ -151,7 +146,6 @@ export default async function PropertyDetails({
             </section>
           </div>
 
-          {/* Rental Card */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 rounded-2xl border bg-card p-6 shadow-lg">
 
