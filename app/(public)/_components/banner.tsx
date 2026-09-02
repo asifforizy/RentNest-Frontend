@@ -56,9 +56,8 @@ export default function HeroBanner() {
       {banners.map((banner, index) => (
         <div
           key={banner.id}
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            index === current ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 transition-opacity duration-700 ${index === current ? "opacity-100" : "opacity-0"
+            }`}
         >
           <Image
             src={banner.src}
@@ -109,9 +108,8 @@ export default function HeroBanner() {
             key={index}
             onClick={() => setCurrent(index)}
             aria-label={`Go to banner ${index + 1}`}
-            className={`h-2 rounded-full transition-all ${
-              index === current ? "w-6 bg-white" : "w-2 bg-white/50"
-            }`}
+            className={`h-2 rounded-full transition-all ${index === current ? "w-6 bg-white" : "w-2 bg-white/50"
+              }`}
           />
         ))}
       </div>

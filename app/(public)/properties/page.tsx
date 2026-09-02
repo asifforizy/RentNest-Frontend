@@ -1,21 +1,11 @@
 
-import { PropertiesPageProps } from "@/types/property";
 import { getAllProperties } from "../_actions/properties";
 import PropertyList from "../_components/propertyList";
 
 
-export default async function PropertiesPage({
-  searchParams,
-}: PropertiesPageProps) {
-  const params = await searchParams;
+export default async function PropertiesPage() {
 
-  const properties = await getAllProperties({
-    search: params.search,
-    category: params.category,
-    minPrice: params.minPrice,
-    maxPrice: params.maxPrice,
-    location: params.location,
-  });
+  const properties = await getAllProperties();
 
   return (
     <main className="mx-auto  px-4 py-10 sm:px-6 lg:px-20">
