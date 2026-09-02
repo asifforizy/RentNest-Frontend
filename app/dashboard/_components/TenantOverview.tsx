@@ -10,7 +10,6 @@ import type { Payment } from "@/types/payment";
 
 type TenantOverviewProps = {
     rentals: Rental[];
-    payments: Payment[];
 };
 
 export default function TenantOverview({
