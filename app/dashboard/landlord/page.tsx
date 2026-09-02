@@ -53,7 +53,7 @@ export default async function LandlordDashboardPage() {
           </Link>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
           <Link
             href="/dashboard/landlord/properties"
             className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-gray-300 hover:shadow-md"
@@ -82,69 +82,6 @@ export default async function LandlordDashboardPage() {
               </div>
             </div>
           </Link>
-
-
-          <Link
-            href="/dashboard/landlord/properties?availability=AVAILABLE"
-            className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-gray-300 hover:shadow-md"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500">
-                  Available Properties
-                </p>
-                <h2 className="mt-3 text-3xl font-bold text-gray-900">
-                  {availableProperties}
-                </h2>
-                <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-900">
-                  View properties
-                  <ArrowRight
-                    size={16}
-                    className="transition group-hover:translate-x-1"
-                  />
-                </div>
-              </div>
-              <div className="rounded-xl bg-gray-100 p-3">
-                <CircleCheck
-                  size={22}
-                  className="text-gray-700"
-                />
-              </div>
-            </div>
-          </Link>
-
-
-
-          <Link
-            href="/dashboard/landlord/properties?availability=UNAVAILABLE"
-            className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-gray-300 hover:shadow-md"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500">
-                  Unavailable Properties
-                </p>
-                <h2 className="mt-3 text-3xl font-bold text-gray-900">
-                  {unavailableProperties}
-                </h2>
-                <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-900">
-                  View unavailable
-                  <ArrowRight
-                    size={16}
-                    className="transition group-hover:translate-x-1"
-                  />
-                </div>
-              </div>
-              <div className="rounded-xl bg-gray-100 p-3">
-                <Home
-                  size={22}
-                  className="text-gray-700"
-                />
-              </div>
-            </div>
-          </Link>
-
-
 
           <Link
             href="/dashboard/landlord/requests"
