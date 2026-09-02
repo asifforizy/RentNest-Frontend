@@ -8,6 +8,7 @@ import { MapPin, Pencil, Trash2, Home, ArrowRight } from "lucide-react";
 
 import type { LandlordProperty } from "@/types/landlord";
 import { deletePropertyAction } from "../_actions/landlord";
+import Image from "next/image";
 
 interface PropertyCardProps {
   property: LandlordProperty;
@@ -73,7 +74,10 @@ export default function PropertyCard({
             }`}
         >
           {hasValidPhoto ? (
-            <img
+            <Image
+            unoptimized
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               src={property.propertyPhoto!}
               alt={property.title}
               onError={() => setImgFailed(true)}

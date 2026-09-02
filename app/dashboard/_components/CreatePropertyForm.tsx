@@ -1,11 +1,10 @@
 "use client";
-import type { Category } from "@/types/landlord";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  createPropertyAction,
-  getCategoriesAction,
-} from "../_actions/landlord";
+import { toast } from "sonner";
+import { createPropertyAction, getCategoriesAction } from "../_actions/landlord";
+import type { Category } from "@/types/landlord";
 
 export default function CreatePropertyForm() {
   const router = useRouter();
@@ -74,7 +73,7 @@ export default function CreatePropertyForm() {
     e.preventDefault();
 
     if (!formData.categoryId) {
-      alert("Choose a category before creating the property.");
+      toast.error("Choose a category before creating the property.");
       return;
     }
 
@@ -91,12 +90,14 @@ export default function CreatePropertyForm() {
         categoryId: formData.categoryId,
       });
 
+      toast.success("Property created successfully.");
+
       router.push("/dashboard/landlord");
       router.refresh();
     } catch (error) {
       console.error("Create property error:", error);
 
-      alert(
+      toast.error(
         error instanceof Error ? error.message : "Failed to create property"
       );
     } finally {
