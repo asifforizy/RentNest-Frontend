@@ -1,8 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, LogOut, User } from 'lucide-react'
+import { LayoutDashboard, LogOut, Menu, User } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
@@ -12,6 +13,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from '@/components/ui/sheet'
 
 import { Button } from '@/components/ui/button'
 import { logout } from '@/service/logout'
@@ -51,6 +60,7 @@ type NavbarProps = {
 export function Navbar({ user }: NavbarProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleLogout = async () => {
     try {
@@ -58,6 +68,7 @@ export function Navbar({ user }: NavbarProps) {
 
       toast.success('User Logged Out Successfully!')
 
+      setMobileOpen(false)
       router.push('/auth/login')
       router.refresh()
     } catch (error) {
@@ -70,7 +81,101 @@ export function Navbar({ user }: NavbarProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center">
 
-          <div className="flex-1">
+          <div className="flex flex-1 items-center gap-2">
+            {/* Mobile menu trigger */}
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  className="flex size-9 items-center justify-center rounded-md hover:bg-muted md:hidden"
+                  aria-label="Open menu"
+                >
+                  <Menu className="size-5" />
+                </button>
+              </SheetTrigger>
+
+              <SheetContent side="left" className="w-72">
+                <SheetHeader>
+                  <SheetTitle>
+                    <Link
+                      href="/"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-xl font-bold"
+                    >
+                      RentNest
+                    </Link>
+                  </SheetTitle>
+                </SheetHeader>
+
+                <div className="mt-6 flex flex-col gap-1 px-1">
+                  {navItems.map((item) => {
+                    const isActive =
+                      item.href === '/'
+                        ? pathname === '/'
+                        : pathname.startsWith(item.href)
+
+                    return (
+                      <SheetClose asChild key={item.href}>
+                        <Link
+                          href={item.href}
+                          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${isActive
+                              ? 'bg-muted font-bold text-zinc-900'
+                              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                            }`}
+                        >
+                          {item.label}
+                        </Link>
+                      </SheetClose>
+                    )
+                  })}
+                </div>
+
+                <DropdownMenuSeparator className="my-4" />
+
+                {user.success ? (
+                  <div className="flex flex-col gap-1 px-1">
+                    <div className="px-3 py-1.5">
+                      <p className="text-sm font-medium">
+                        {user.data.profile.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {user.data.profile.email}
+                      </p>
+                    </div>
+
+                    <SheetClose asChild>
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-muted"
+                      >
+                        <LayoutDashboard className="size-4" />
+                        Dashboard
+                      </Link>
+                    </SheetClose>
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut className="size-4" />
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <div className="px-1">
+                    <SheetClose asChild>
+                      <Link href="/auth/login">
+                        <Button className="w-full cursor-pointer">
+                          Login
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                  </div>
+                )}
+              </SheetContent>
+            </Sheet>
+
             <Link
               href="/"
               className="text-2xl font-bold"
@@ -90,11 +195,10 @@ export function Navbar({ user }: NavbarProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition-colors ${
-                    isActive
+                  className={`text-sm font-medium transition-colors ${isActive
                       ? 'text-foreground font-bold text-zinc-900 '
                       : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -134,11 +238,10 @@ export function Navbar({ user }: NavbarProps) {
                   <DropdownMenuItem asChild>
                     <Link
                       href="/dashboard"
-                      className={`flex cursor-pointer items-center gap-2 ${
-                        pathname.startsWith('/dashboard')
+                      className={`flex cursor-pointer items-center gap-2 ${pathname.startsWith('/dashboard')
                           ? 'font-medium'
                           : ''
-                      }`}
+                        }`}
                     >
                       <LayoutDashboard className="size-4" />
                       Dashboard
@@ -147,7 +250,6 @@ export function Navbar({ user }: NavbarProps) {
 
                   <DropdownMenuSeparator />
 
-    
                   <DropdownMenuItem
                     onClick={handleLogout}
                     className="flex cursor-pointer items-center gap-2 text-red-600 focus:text-red-600"
@@ -171,4 +273,3 @@ export function Navbar({ user }: NavbarProps) {
     </nav>
   )
 }
-
