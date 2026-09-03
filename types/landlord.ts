@@ -1,3 +1,5 @@
+import { PaymentStatus } from "./payment";
+
 export interface Category {
   id: string;
   name: string;
@@ -36,34 +38,47 @@ export interface CreatePropertyInput {
   categoryId: string;
 }
 export interface RentalRequest {
+  id: string;
+  propertyId: string;
+  status: RequestStatus;
+
+  moveInDate?: string;
+  message?: string;
+  rejectionReason?: string | null;
+  approvedAt?: string | null;
+
+  tenantId?: string;
+
+  tenant?: {
     id: string;
-    propertyId: string;
-    status: RequestStatus;
-    moveInDate?: string;
-    message?: string;
-    rejectionReason?: string | null;
-    approvedAt?: string | null;
-    tenantId?: string;
-    tenant?: {
-        id: string;
-        name: string;
-        email: string;
-    };
-    property?: {
-        id: string;
-        title: string;
-        city: string;
-        country: string;
-        propertyPhoto?: string;
-    };
-    createdAt: string;
-    updatedAt?: string;
+    name: string;
+    email: string;
+  };
+
+  property?: {
+    id: string;
+    title: string;
+    city: string;
+    country: string;
+    propertyPhoto?: string;
+  };
+
+  payment?: {
+    id: string;
+    transactionId: string;
+    amount: number;
+    status: PaymentStatus;
+    paidAt?: string | null;
+  } | null;
+
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export type RequestStatus =
-    | "PENDING"
-    | "APPROVED"
-    | "REJECTED"
-    | "CANCELLED"
-    | "ACTIVE"
-    | "COMPLETED";
+  | "PENDING"
+  | "APPROVED"
+  | "REJECTED"
+  | "CANCELLED"
+  | "ACTIVE"
+  | "COMPLETED";

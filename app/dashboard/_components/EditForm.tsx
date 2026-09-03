@@ -63,10 +63,7 @@ export default function EditPropertyForm({
 
       toast.success("Property updated successfully");
 
-      router.push(
-        `/dashboard/landlord/properties/${property.id}`
-      );
-
+      router.push(`/dashboard/landlord/properties/${property.id}`);
       router.refresh();
     } catch (error) {
       console.error(error);

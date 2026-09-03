@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
 import { deletePropertyAction } from "../_actions/landlord";
+import { toast } from "sonner";
 
 
 
@@ -33,12 +34,17 @@ export default function PropertyManagementActions({
 
       await deletePropertyAction(property.id);
 
-      router.push("/dashboard/landlord/properties");
-      router.refresh();
+      toast.success("Property deleted successfully");
+
+      router.replace("/dashboard/landlord/properties");
     } catch (error) {
       console.error(error);
 
-      alert("Failed to delete property.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to delete property"
+      );
     } finally {
       setLoading(false);
     }

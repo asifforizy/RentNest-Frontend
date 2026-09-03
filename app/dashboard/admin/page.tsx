@@ -14,7 +14,7 @@ export default async function AdminPage() {
 
   const activeUsers = users.filter(
     (user) => user.status === "ACTIVE"
-  ).length
+  ).length -1
 
   const tenants = users.filter(
     (user) => user.role === "TENANT"

@@ -60,8 +60,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
                 <CardContent className="space-y-4">
 
                     <p className="text-sm text-muted-foreground">
-                        {property.description?.split(" ").slice(0, 15).join(" ")}
-                        {property.description?.split(" ").length > 15 && "..."}
+                        {property.description?.split(" ").slice(0, 12).join(" ")}
+                        {property.description?.split(" ").length > 12 && "..."}
                     </p>
 
                     <div>

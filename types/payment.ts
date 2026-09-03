@@ -8,3 +8,5 @@ export type Payment = {
 export type PaymentsResponse = {
   data: Payment[];
 };
+
+export type PaymentStatus = | "PENDING" | "COMPLETED" | "FAILED";

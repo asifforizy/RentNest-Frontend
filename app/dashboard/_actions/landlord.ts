@@ -1,7 +1,12 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { Category, CreatePropertyInput, RequestStatus } from "@/types/landlord";
+import {
+  Category,
+  CreatePropertyInput,
+  RentalRequest,
+  RequestStatus,
+} from "@/types/landlord";
 
 const API_URL = process.env.BACKEND_API_URL;
 
@@ -26,12 +31,10 @@ export async function getMyPropertiesAction() {
   });
 
   const result = await response.json();
- 
 
   if (!response.ok) {
     throw new Error(result.message || "Failed to fetch properties");
   }
-  
 
   return result.data;
 }
@@ -56,7 +59,6 @@ export async function createPropertyAction(data: CreatePropertyInput) {
   return result.data;
 }
 
-
 export async function updatePropertyAction(
   id: string,
   data: Partial<CreatePropertyInput>
@@ -77,9 +79,6 @@ export async function updatePropertyAction(
   return result.data;
 }
 
-
-
-
 export async function deletePropertyAction(id: string) {
   const headers = await getAuthHeaders();
 
@@ -96,17 +95,17 @@ export async function deletePropertyAction(id: string) {
   return result.data;
 }
 
-
-
-
 export async function getLandlordRequestsAction() {
   const headers = await getAuthHeaders();
 
-  const response = await fetch(`https://rent-nest-beta.vercel.app/api/landlord/requests`, {
-    method: "GET",
-    headers,
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `https://rent-nest-beta.vercel.app/api/landlord/requests`,
+    {
+      method: "GET",
+      headers,
+      cache: "no-store",
+    }
+  );
 
   const result = await response.json();
 
@@ -115,10 +114,6 @@ export async function getLandlordRequestsAction() {
   }
   return result.data;
 }
-
-
-
-
 
 export async function updateRentalRequestAction(
   id: string,
@@ -142,52 +137,65 @@ export async function updateRentalRequestAction(
   return result.data;
 }
 
-
-
-
-
-
 export async function getCategoriesAction(): Promise<Category[]> {
   const headers = await getAuthHeaders();
- 
+
   const response = await fetch(`${API_URL}/api/categories`, {
     method: "GET",
     headers,
   });
- 
+
   const result = await response.json();
- 
+
   if (!response.ok) {
     throw new Error(result.message || "Failed to load categories");
   }
- 
+
   return result.data;
 }
-
-
-
 
 export async function getMyRentalRequestsAction() {
   const headers = await getAuthHeaders();
 
-  const response = await fetch(
-    `${API_URL}/api/landlord/requests`,
-    {
-      method: "GET",
-      headers,
-      cache: "no-store",
-    }
-  );
+  const response = await fetch(`${API_URL}/api/landlord/requests`, {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
 
   const result = await response.json();
 
   console.log("LANDLORD RENTAL REQUESTS:", result);
 
   if (!response.ok) {
-    throw new Error(
-      result.message || "Failed to fetch rental requests"
-    );
+    throw new Error(result.message || "Failed to fetch rental requests");
   }
 
   return result.data || [];
+}
+
+export async function getRentalRequestById(
+  id: string
+): Promise<RentalRequest | null> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+
+  const response = await fetch(`${API_URL}/api/landlord/requests`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result?.message || "Failed to fetch rental requests");
+  }
+
+  const request = result.data.find((item: RentalRequest) => item.id === id);
+
+  return request ?? null;
 }
