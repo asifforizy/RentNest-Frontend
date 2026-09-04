@@ -1,3 +1,4 @@
+
 import { Building2, Users, ShieldCheck } from "lucide-react";
 
 export default function AboutPage() {
