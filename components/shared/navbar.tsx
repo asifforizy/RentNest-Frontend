@@ -24,6 +24,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { logout } from '@/service/logout'
 import { ModeToggle } from '../mode-toggle'
+import { Logo } from '@/assets/logo'
 
 
 const navItems = [
@@ -99,8 +100,9 @@ export function Navbar({ user }: NavbarProps) {
                     <Link
                       href="/"
                       onClick={() => setMobileOpen(false)}
-                      className="text-xl font-bold"
+                      className="flex items-center gap-2 text-xl font-bold"
                     >
+                      <Logo className="h-6 w-auto text-[#3902FF] dark:text-[#7B5CFF]" />
                       RentNest
                     </Link>
                   </SheetTitle>
@@ -118,8 +120,8 @@ export function Navbar({ user }: NavbarProps) {
                         <Link
                           href={item.href}
                           className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${isActive
-                              ? 'bg-muted font-bold text-foreground'
-                              : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                            ? 'bg-muted font-bold text-foreground'
+                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`}
                         >
                           {item.label}
@@ -175,10 +177,8 @@ export function Navbar({ user }: NavbarProps) {
               </SheetContent>
             </Sheet>
 
-            <Link
-              href="/"
-              className="text-2xl font-bold"
-            >
+            <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
+              <Logo className="h-7 w-auto text-[#3902FF] dark:text-[#7B5CFF]" />
               RentNest
             </Link>
           </div>
@@ -195,8 +195,8 @@ export function Navbar({ user }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   className={`text-sm font-medium transition-colors ${isActive
-                      ? 'font-bold text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                    ? 'font-bold text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                     }`}
                 >
                   {item.label}
@@ -239,8 +239,8 @@ export function Navbar({ user }: NavbarProps) {
                     <Link
                       href="/dashboard"
                       className={`flex cursor-pointer items-center gap-2 ${pathname.startsWith('/dashboard')
-                          ? 'font-medium'
-                          : ''
+                        ? 'font-medium'
+                        : ''
                         }`}
                     >
                       <LayoutDashboard className="size-4" />
