@@ -1,95 +1,82 @@
-
 import { PropertyCardProps } from "@/types/property";
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import Image from "next/image";
 
-
-
 export default function PropertyCard({ property }: PropertyCardProps) {
-    const isAvailable = property.availability === "AVAILABLE";
+  const isAvailable = property.availability === "AVAILABLE";
 
-    return (
-        <Link href={`/properties/${property.id}`}>
-            <Card className="group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ">
+  return (
+    <Link href={`/properties/${property.id}`} className="block h-full">
+      <Card className="group flex h-full flex-col gap-0 overflow-hidden py-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+        {/* Image with padding */}
+        <div className="p-3 pb-0">
+          <div className="relative h-52 w-full overflow-hidden rounded-xl bg-muted">
+            {property.propertyPhoto ? (
+              <Image
+                unoptimized
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                src={property.propertyPhoto}
+                alt={property.title}
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                No Image
+              </div>
+            )}
 
-                <div className="relative h-56 w-full overflow-hidden bg-muted">
-                    {property.propertyPhoto ? (
-                        <Image
-                            unoptimized
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            src={property.propertyPhoto}
-                            alt={property.title}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 "
-                        />
-                    ) : (
-                        <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                            No Image
-                        </div>
-                    )}
+            <Badge
+              variant={isAvailable ? "default" : "destructive"}
+              className="absolute right-3 top-3"
+            >
+              {property.availability}
+            </Badge>
+          </div>
+        </div>
 
-                    <Badge variant={isAvailable ? "default" : "destructive"} className="absolute right-3 top-3" >
-                        {property.availability}
-                    </Badge>
-                </div>
+        <CardHeader className="px-5 pb-2 pt-4">
+          <CardTitle className="line-clamp-1 text-xl">
+            {property.title}
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            {property.city}, {property.country}
+          </p>
+        </CardHeader>
 
-                <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between gap-3">
-                        <CardTitle className="line-clamp-1 text-xl">
-                            {property.title}
-                        </CardTitle>
-                    </div>
+        {/* flex-1 pushes the footer to the bottom on every card */}
+        <CardContent className="flex flex-1 flex-col justify-between gap-4 px-5">
+          <p className="line-clamp-2 min-h-[2.5rem] text-sm text-muted-foreground">
+            {property.description}
+          </p>
 
+          <div>
+            <span className="text-2xl font-bold">
+              ৳{property.rentPrice.toLocaleString()}
+            </span>
+            <span className="ml-1 text-sm text-muted-foreground">/ month</span>
+          </div>
+        </CardContent>
 
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-
-                        <span>
-                            {property.city}, {property.country}
-                        </span>
-                    </div>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-
-                    <p className="text-sm text-muted-foreground">
-                        {property.description?.split(" ").slice(0, 12).join(" ")}
-                        {property.description?.split(" ").length > 12 && "..."}
-                    </p>
-
-                    <div>
-                        <span className="text-2xl font-bold">
-                            ৳{property.rentPrice.toLocaleString()}
-                        </span>
-
-                        <span className="ml-1 text-sm text-muted-foreground">
-                            / month
-                        </span>
-                    </div>
-                </CardContent>
-
-                <CardFooter className="border-t pt-4">
-                    <div className="flex items-center gap-3">
-
-
-                        <div className="flex flex-col">
-                            <p className="text-xs text-muted-foreground leading-none">
-                                Listed by
-                            </p>
-                            <p className="text-sm font-medium leading-tight mt-1">
-                                {property.landlord.name}
-                            </p>
-                        </div>
-                    </div>
-                </CardFooter>
-            </Card>
-        </Link>
-    );
+        <CardFooter className="mt-4 border-t px-5 py-4">
+          <div className="flex flex-col">
+            <p className="text-xs leading-none text-muted-foreground">
+              Listed by
+            </p>
+            <p className="mt-1 text-sm font-medium leading-tight">
+              {property.landlord.name}
+            </p>
+          </div>
+        </CardFooter>
+      </Card>
+    </Link>
+  );
 }

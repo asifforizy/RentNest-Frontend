@@ -7,7 +7,7 @@ import HeroBanner from "./banner";
 export default async function FeaturedProperties() {
   const properties: Property[] = await getAllProperties();
 
-  const featuredProperties = properties.slice(0, 6);
+  const featuredProperties = properties.slice(0,4);
 
   return (
     <section className="mx-auto  px-4 py-16 sm:px-6 lg:px-20">
@@ -20,7 +20,7 @@ export default async function FeaturedProperties() {
       </div>
 
       {featuredProperties.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featuredProperties.map((property: Property) => (
             <PropertyCard
               key={property.id}
