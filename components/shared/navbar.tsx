@@ -77,7 +77,7 @@ export function Navbar({ user }: NavbarProps) {
   }
 
   return (
-    <nav className="border-b">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center">
 
@@ -183,7 +183,7 @@ export function Navbar({ user }: NavbarProps) {
             </Link>
           </div>
 
-          <div className="hidden flex-1 justify-center gap-8 md:flex">
+          <div className="hidden flex-1 justify-center items-center gap-8 md:flex">
             {navItems.map((item) => {
               const isActive =
                 item.href === '/'
