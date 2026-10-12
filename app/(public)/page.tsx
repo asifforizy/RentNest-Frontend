@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <main>
       <div>
-        <div className="p-20">
+        <div className="lg:p-20 px-4 py-10">
           <HeroBanner></HeroBanner>
         </div>
 
