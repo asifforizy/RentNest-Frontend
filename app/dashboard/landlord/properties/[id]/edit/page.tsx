@@ -1,10 +1,8 @@
-
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-
 import { getMyPropertiesAction } from "@/app/dashboard/_actions/landlord";
 import EditPropertyForm from "@/app/dashboard/_components/EditForm";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 interface EditPropertyPageProps {
     params: Promise<{
@@ -19,7 +17,9 @@ export default async function EditPropertyPage({
 
     const properties = await getMyPropertiesAction();
 
-    const property = properties.find((item) => item.id === id);
+    const property = properties.find(
+        (item: { id: string }) => item.id === id
+    );
 
     if (!property) {
         notFound();
@@ -30,7 +30,7 @@ export default async function EditPropertyPage({
             <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
                 <Link
                     href={`/dashboard/landlord/properties/${property.id}`}
-                    className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                    className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
                 >
                     <ArrowLeft size={18} />
                     Back to Property Details

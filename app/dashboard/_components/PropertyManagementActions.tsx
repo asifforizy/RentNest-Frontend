@@ -55,7 +55,7 @@ export default function PropertyManagementActions({
       {/* Edit */}
       <Link
         href={`/dashboard/landlord/properties/${property.id}/edit`}
-        className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+        className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-primary px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
       >
         <Pencil size={17} />
         Edit Property
