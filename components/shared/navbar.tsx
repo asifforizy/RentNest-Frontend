@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { LayoutDashboard, LogOut, Menu, User } from 'lucide-react'
 import { toast } from 'sonner'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +23,8 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { logout } from '@/service/logout'
+import { ModeToggle } from '../mode-toggle'
+
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -65,9 +66,7 @@ export function Navbar({ user }: NavbarProps) {
   const handleLogout = async () => {
     try {
       await logout()
-
       toast.success('User Logged Out Successfully!')
-
       setMobileOpen(false)
       router.push('/auth/login')
       router.refresh()
@@ -119,7 +118,7 @@ export function Navbar({ user }: NavbarProps) {
                         <Link
                           href={item.href}
                           className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${isActive
-                              ? 'bg-muted font-bold text-zinc-900'
+                              ? 'bg-muted font-bold text-foreground'
                               : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`}
                         >
@@ -196,7 +195,7 @@ export function Navbar({ user }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   className={`text-sm font-medium transition-colors ${isActive
-                      ? 'text-foreground font-bold text-zinc-900 '
+                      ? 'font-bold text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
                     }`}
                 >
@@ -206,7 +205,8 @@ export function Navbar({ user }: NavbarProps) {
             })}
           </div>
 
-          <div className="flex flex-1 justify-end">
+          <div className="flex flex-1 justify-end gap-5">
+            <ModeToggle />
             {user.success ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
