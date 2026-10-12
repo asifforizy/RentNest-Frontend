@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createPropertyAction, getCategoriesAction } from "../_actions/landlord";
+
+import {
+  createPropertyAction,
+  getCategoriesAction,
+} from "../_actions/landlord";
+
 import type { Category } from "@/types/landlord";
 
 export default function CreatePropertyForm() {
@@ -34,9 +39,13 @@ export default function CreatePropertyForm() {
         setCategoriesError(null);
 
         const data = await getCategoriesAction();
-        if (!cancelled) setCategories(data);
+
+        if (!cancelled) {
+          setCategories(data);
+        }
       } catch (error) {
         console.error("Load categories error:", error);
+
         if (!cancelled) {
           setCategoriesError(
             error instanceof Error
@@ -45,7 +54,9 @@ export default function CreatePropertyForm() {
           );
         }
       } finally {
-        if (!cancelled) setCategoriesLoading(false);
+        if (!cancelled) {
+          setCategoriesLoading(false);
+        }
       }
     }
 
@@ -98,21 +109,29 @@ export default function CreatePropertyForm() {
       console.error("Create property error:", error);
 
       toast.error(
-        error instanceof Error ? error.message : "Failed to create property"
+        error instanceof Error
+          ? error.message
+          : "Failed to create property"
       );
     } finally {
       setLoading(false);
     }
   }
 
+  const inputClassName =
+    "w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-60";
+
+  const labelClassName =
+    "mb-2 block text-sm font-medium text-foreground";
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 rounded-xl border bg-white p-6 shadow-sm"
+      className="space-y-6 rounded-xl border border-border bg-card p-6 text-card-foreground shadow-sm"
     >
-      {/* Title */}
+      {/* Property Title */}
       <div>
-        <label htmlFor="title" className="mb-2 block text-sm font-medium">
+        <label htmlFor="title" className={labelClassName}>
           Property Title
         </label>
 
@@ -124,15 +143,13 @@ export default function CreatePropertyForm() {
           value={formData.title}
           onChange={handleChange}
           required
-          className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm outline-none focus:border-neutral-900"
+          className={inputClassName}
         />
       </div>
 
+      {/* Description */}
       <div>
-        <label
-          htmlFor="description"
-          className="mb-2 block text-sm font-medium"
-        >
+        <label htmlFor="description" className={labelClassName}>
           Description
         </label>
 
@@ -144,12 +161,13 @@ export default function CreatePropertyForm() {
           onChange={handleChange}
           rows={5}
           required
-          className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 text-sm outline-none focus:border-neutral-900"
+          className={`${inputClassName} resize-none`}
         />
       </div>
 
+      {/* Monthly Rent */}
       <div>
-        <label htmlFor="rentPrice" className="mb-2 block text-sm font-medium">
+        <label htmlFor="rentPrice" className={labelClassName}>
           Monthly Rent
         </label>
 
@@ -158,17 +176,19 @@ export default function CreatePropertyForm() {
           name="rentPrice"
           type="number"
           min="0"
+          step="any"
           placeholder="25000"
           value={formData.rentPrice}
           onChange={handleChange}
           required
-          className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm outline-none focus:border-neutral-900"
+          className={inputClassName}
         />
       </div>
 
+      {/* Location */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="city" className="mb-2 block text-sm font-medium">
+          <label htmlFor="city" className={labelClassName}>
             City
           </label>
 
@@ -179,12 +199,12 @@ export default function CreatePropertyForm() {
             placeholder="Dhaka"
             value={formData.city}
             onChange={handleChange}
-            className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm outline-none focus:border-neutral-900"
+            className={inputClassName}
           />
         </div>
 
         <div>
-          <label htmlFor="country" className="mb-2 block text-sm font-medium">
+          <label htmlFor="country" className={labelClassName}>
             Country
           </label>
 
@@ -195,13 +215,14 @@ export default function CreatePropertyForm() {
             placeholder="Bangladesh"
             value={formData.country}
             onChange={handleChange}
-            className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm outline-none focus:border-neutral-900"
+            className={inputClassName}
           />
         </div>
       </div>
 
+      {/* Category */}
       <div>
-        <label htmlFor="categoryId" className="mb-2 block text-sm font-medium">
+        <label htmlFor="categoryId" className={labelClassName}>
           Category
         </label>
 
@@ -212,10 +233,12 @@ export default function CreatePropertyForm() {
           onChange={handleChange}
           required
           disabled={categoriesLoading || !!categoriesError}
-          className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-sm outline-none focus:border-neutral-900 disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-400"
+          className={inputClassName}
         >
           <option value="">
-            {categoriesLoading ? "Loading categories…" : "Select category"}
+            {categoriesLoading
+              ? "Loading categories…"
+              : "Select category"}
           </option>
 
           {categories.map((category) => (
@@ -226,17 +249,15 @@ export default function CreatePropertyForm() {
         </select>
 
         {categoriesError && (
-          <p className="mt-2 text-sm text-red-600">
+          <p className="mt-2 text-sm text-destructive">
             {categoriesError}. Refresh the page to try again.
           </p>
         )}
       </div>
 
+      {/* Property Photo */}
       <div>
-        <label
-          htmlFor="propertyPhoto"
-          className="mb-2 block text-sm font-medium"
-        >
+        <label htmlFor="propertyPhoto" className={labelClassName}>
           Property Photo URL
         </label>
 
@@ -247,14 +268,14 @@ export default function CreatePropertyForm() {
           placeholder="https://example.com/property.jpg"
           value={formData.propertyPhoto}
           onChange={handleChange}
-          className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm outline-none focus:border-neutral-900"
+          className={inputClassName}
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-neutral-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {loading ? "Creating property..." : "Create Property"}
       </button>

@@ -1,13 +1,13 @@
+
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trash2 } from "lucide-react";
-import { deletePropertyAction } from "../_actions/landlord";
 import { toast } from "sonner";
 
-
+import { deletePropertyAction } from "../_actions/landlord";
 
 interface PropertyManagementActionsProps {
   property: {
@@ -19,7 +19,6 @@ export default function PropertyManagementActions({
   property,
 }: PropertyManagementActionsProps) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
@@ -37,6 +36,7 @@ export default function PropertyManagementActions({
       toast.success("Property deleted successfully");
 
       router.replace("/dashboard/landlord/properties");
+      router.refresh();
     } catch (error) {
       console.error(error);
 
@@ -51,29 +51,26 @@ export default function PropertyManagementActions({
   }
 
   return (
-    <div className="flex items-center gap-3">
-
+    <div className="flex flex-wrap items-center gap-3">
       {/* Edit */}
       <Link
         href={`/dashboard/landlord/properties/${property.id}/edit`}
-        className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+        className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
       >
         <Pencil size={17} />
-
         Edit Property
       </Link>
 
       {/* Delete */}
       <button
+        type="button"
         onClick={handleDelete}
         disabled={loading}
-        className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/20 bg-destructive/10 px-4 py-2.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-60"
       >
         <Trash2 size={17} />
-
         {loading ? "Deleting..." : "Delete"}
       </button>
-
     </div>
   );
 }

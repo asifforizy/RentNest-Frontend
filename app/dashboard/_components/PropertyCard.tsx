@@ -21,12 +21,13 @@ const RENTAL_STATUS_STYLES: Record<
 > = {
   AVAILABLE: {
     dot: "bg-emerald-500",
-    badge: "bg-emerald-50 text-emerald-700",
+    badge:
+      "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
     label: "Available",
   },
   UNAVAILABLE: {
-    dot: "bg-neutral-400",
-    badge: "bg-neutral-100 text-neutral-600",
+    dot: "bg-muted-foreground",
+    badge: "bg-muted text-muted-foreground",
     label: "Unavailable",
   },
 };
@@ -47,13 +48,16 @@ export default function PropertyCard({
   const propertyUrl = `/dashboard/landlord/properties/${property.id}`;
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg">
-
-      <Link href={propertyUrl} className="block">
-        <div className="relative h-44 overflow-hidden bg-neutral-100">
-          {!imgFailed && (
+    <article className="group overflow-hidden rounded-2xl border border-border bg-card text-card-foreground transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <Link
+        href={propertyUrl}
+        className="block"
+        aria-label={`View ${property.title}`}
+      >
+        <div className="relative h-44 overflow-hidden bg-muted">
+          {!imgFailed && property.propertyPhoto ? (
             <Image
-              src={property.propertyPhoto as string}
+              src={property.propertyPhoto}
               alt={property.title}
               fill
               unoptimized
@@ -61,8 +65,11 @@ export default function PropertyCard({
               onError={() => setImgFailed(true)}
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
+          ) : (
+            <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+              No image available
+            </div>
           )}
-
 
           <div className="absolute left-4 top-4">
             <div
@@ -75,25 +82,21 @@ export default function PropertyCard({
             </div>
           </div>
 
-          {/* Category */}
           {property.category && (
             <div className="absolute right-4 top-4">
-              <span className="rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-neutral-700 backdrop-blur-sm">
+              <span className="rounded-full border border-border/50 bg-card/90 px-3 py-1.5 text-xs font-medium text-card-foreground backdrop-blur-sm">
                 {property.category.name}
               </span>
             </div>
           )}
         </div>
 
-
         <div className="p-5">
-          <Link href={propertyUrl}>
-            <h2 className="truncate text-lg font-semibold text-neutral-900 transition hover:text-neutral-600">
-              {property.title}
-            </h2>
-          </Link>
+          <h2 className="truncate text-lg font-semibold text-card-foreground transition-colors group-hover:text-primary">
+            {property.title}
+          </h2>
 
-          <div className="mt-2 flex items-center gap-2 text-sm text-neutral-500">
+          <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin size={16} className="shrink-0" />
 
             <span className="truncate">
@@ -101,34 +104,29 @@ export default function PropertyCard({
             </span>
           </div>
 
-          <div className="my-5 border-t border-neutral-100" />
+          <div className="my-5 border-t border-border" />
 
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-400">
+          <div className="flex items-end justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 Monthly Rent
               </p>
 
-              <p className="mt-1 text-xl font-bold text-neutral-900">
-                ৳ {property.rentPrice?.toLocaleString()}
+              <p className="mt-1 truncate text-xl font-bold text-card-foreground">
+                ৳ {property.rentPrice?.toLocaleString() ?? "N/A"}
               </p>
             </div>
 
-            <Link
-              href={propertyUrl}>
-              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-900">
-                View all
-                <ArrowRight
-                  size={16}
-                  className="transition group-hover:translate-x-1"
-                />
-              </div>
-            </Link>
+            <span className="flex shrink-0 items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-primary">
+              View details
+              <ArrowRight
+                size={16}
+                className="transition-transform group-hover:translate-x-1"
+              />
+            </span>
           </div>
         </div>
       </Link>
     </article>
   );
 }
-
-

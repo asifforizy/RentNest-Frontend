@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { Loader2, Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-
 import { updatePropertyAction } from "@/app/dashboard/_actions/landlord";
 import type {
   LandlordProperty,
@@ -35,6 +34,11 @@ export default function EditPropertyForm({
     availability: property.availability || "AVAILABLE",
   });
 
+  const inputClassName =
+    "mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30";
+
+  const labelClassName = "text-sm font-medium text-foreground";
+
   function handleChange(
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -48,9 +52,7 @@ export default function EditPropertyForm({
     }));
   }
 
-  async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
@@ -67,7 +69,6 @@ export default function EditPropertyForm({
       router.refresh();
     } catch (error) {
       console.error(error);
-
       toast.error("Failed to update property");
     } finally {
       setLoading(false);
@@ -77,138 +78,135 @@ export default function EditPropertyForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-gray-200 bg-white p-6"
+      className="rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-sm"
     >
-
       <div className="grid gap-6">
-
         {/* Title */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
+          <label htmlFor="title" className={labelClassName}>
             Property Title
           </label>
 
           <input
+            id="title"
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             required
-            className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+            className={inputClassName}
           />
         </div>
 
         {/* Description */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
+          <label htmlFor="description" className={labelClassName}>
             Description
           </label>
 
           <textarea
+            id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
             rows={5}
-            className="mt-2 w-full resize-none rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+            className={`${inputClassName} resize-none`}
           />
         </div>
 
         {/* Rent Price */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
+          <label htmlFor="rentPrice" className={labelClassName}>
             Monthly Rent
           </label>
 
           <input
+            id="rentPrice"
             type="number"
             name="rentPrice"
             value={formData.rentPrice}
             onChange={handleChange}
             required
             min="0"
-            className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+            step="any"
+            className={inputClassName}
           />
         </div>
 
         {/* Location */}
         <div className="grid gap-5 sm:grid-cols-2">
-
           <div>
-            <label className="text-sm font-medium text-gray-700">
+            <label htmlFor="city" className={labelClassName}>
               City
             </label>
 
             <input
+              id="city"
               type="text"
               name="city"
               value={formData.city}
               onChange={handleChange}
-              className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+              className={inputClassName}
             />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">
+            <label htmlFor="country" className={labelClassName}>
               Country
             </label>
 
             <input
+              id="country"
               type="text"
               name="country"
               value={formData.country}
               onChange={handleChange}
-              className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+              className={inputClassName}
             />
           </div>
-
         </div>
 
         {/* Image */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
+          <label htmlFor="propertyPhoto" className={labelClassName}>
             Property Image URL
           </label>
 
           <input
-            type="text"
+            id="propertyPhoto"
+            type="url"
             name="propertyPhoto"
             value={formData.propertyPhoto}
             onChange={handleChange}
             placeholder="https://example.com/image.jpg"
-            className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+            className={inputClassName}
           />
         </div>
 
         {/* Availability */}
         <div>
-          <label className="text-sm font-medium text-gray-700">
+          <label htmlFor="availability" className={labelClassName}>
             Availability
           </label>
 
           <select
+            id="availability"
             name="availability"
             value={formData.availability}
             onChange={handleChange}
-            className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-gray-500"
+            className={inputClassName}
           >
-            <option value="AVAILABLE">
-              Available
-            </option>
-
-            <option value="UNAVAILABLE">
-              Unavailable
-            </option>
+            <option value="AVAILABLE">Available</option>
+            <option value="UNAVAILABLE">Unavailable</option>
           </select>
         </div>
-
       </div>
 
       {/* Buttons */}
-      <div className="mt-8 flex items-center justify-between border-t border-gray-100 pt-6">
-
+      <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href={`/dashboard/landlord/properties/${property.id}`}
-          className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
         >
           <ArrowLeft size={17} />
           Cancel
@@ -217,28 +215,21 @@ export default function EditPropertyForm({
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? (
             <>
-              <Loader2
-                size={17}
-                className="animate-spin"
-              />
-
+              <Loader2 size={17} className="animate-spin" />
               Updating...
             </>
           ) : (
             <>
               <Save size={17} />
-
               Save Changes
             </>
           )}
         </button>
-
       </div>
-
     </form>
   );
 }
